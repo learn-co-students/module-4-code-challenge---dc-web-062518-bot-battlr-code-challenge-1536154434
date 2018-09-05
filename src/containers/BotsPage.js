@@ -8,8 +8,7 @@ class BotsPage extends React.Component {
     super()
     this.state = {
       allBots: [],
-      botArmy: [],
-      showBot: null
+      botArmy: []
     }
   }
 
@@ -35,8 +34,13 @@ class BotsPage extends React.Component {
   render() {
     return (
       <div>
-        <YourBotArmy botArmy={this.state.botArmy} removeBot={this.removeFromBotArmy}/>
-        <BotCollection allBots={this.state.allBots} addBot={this.addToBotArmy}/>
+        <YourBotArmy
+          botArmy={this.state.botArmy}
+          removeBot={this.removeFromBotArmy}/>
+        <BotCollection
+          allBots={this.state.allBots}
+          addBot={this.addToBotArmy}
+        />
       </div>
     );
   }
