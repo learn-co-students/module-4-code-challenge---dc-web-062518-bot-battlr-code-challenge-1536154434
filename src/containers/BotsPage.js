@@ -8,14 +8,27 @@ class BotsPage extends React.Component {
     super()
     this.state = {
       allBots: [],
-      botArmy: []
+      botArmy: [],
+      filter: "No Filter",
+      filteredBots: []
     }
   }
 
   componentDidMount() {
     fetch("https://bot-battler-api.herokuapp.com/api/v1/bots")
       .then(r => r.json())
-      .then(allBots => this.setState({allBots}))
+      .then(allBots => this.setState({allBots, filteredBots: allBots}))
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    if (prevState.filter !== this.state.filter) {
+      if (this.state.filter != "No Filter") {
+        let filteredBots = this.state.allBots.filter(bot => bot.bot_class === this.state.filter)
+        this.setState({filteredBots})
+      } else {
+        this.setState({filteredBots: this.props.allBots})
+      }
+    }
   }
 
   addToBotArmy = (bot) => {
@@ -31,6 +44,13 @@ class BotsPage extends React.Component {
     this.setState({botArmy: newArmy})
   }
 
+  changeFilter = (e) => {
+    e.preventDefault()
+    e.persist()
+    let type = e.target.querySelector('#botType').value
+    this.setState({filter: type})
+  }
+
   render() {
     return (
       <div>
@@ -38,8 +58,9 @@ class BotsPage extends React.Component {
           botArmy={this.state.botArmy}
           removeBot={this.removeFromBotArmy}/>
         <BotCollection
-          allBots={this.state.allBots}
+          bots={this.state.filteredBots}
           addBot={this.addToBotArmy}
+          changeFilter={this.changeFilter}
         />
       </div>
     );
