@@ -26,7 +26,7 @@ class BotsPage extends React.Component {
         let filteredBots = this.state.allBots.filter(bot => bot.bot_class === this.state.filter)
         this.setState({filteredBots})
       } else {
-        this.setState({filteredBots: this.props.allBots})
+        this.setState({filteredBots: this.state.allBots})
       }
     }
   }
@@ -48,7 +48,11 @@ class BotsPage extends React.Component {
     e.preventDefault()
     e.persist()
     let type = e.target.querySelector('#botType').value
-    this.setState({filter: type})
+    if (type) {
+      this.setState({filter: type})
+    } else {
+      alert("Please select an option")
+    }
   }
 
   render() {
